@@ -1,3 +1,5 @@
+12347, "Livro Z", "Autor Z", "Genero A", 2024, "Editora Z", 500
+
 /*Livro *criar_livro_manualmente(){
     int codigo, ano, numeroPaginas;
     char *titulo, *autor, *genero, *editora;

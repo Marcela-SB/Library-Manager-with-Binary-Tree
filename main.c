@@ -3,13 +3,19 @@
 
 #include "arvore.c"
 
+No* raizOriginal = NULL;
+
 int main(void){
     int opcao = -1;
-    No* raizOriginal = NULL;
+    Livro l;
+    char *genero = malloc(50 * sizeof(char));
+    genero[0] = "\0";
 
-    Livro l1 = criar_livro(12344, "Livro A", "Autor A", "Genero A", 2024, "Editora A", 200);
-    Livro l2 = criar_livro(12345, "Livro B", "Autor B", "Genero B", 2023, "Editora B", 150);
-    Livro l3 = criar_livro(12343, "Livro C", "Autor C", "Genero A", 2022, "Editora C", 300);
+    carregar_livros("bd.csv", raizOriginal);
+
+    Livro l1 = criar_livro(12344, "Livro A", "Autor A", "A", 2024, "Editora A", 200);
+    Livro l2 = criar_livro(12345, "Livro B", "Autor B", "B", 2023, "Editora B", 150);
+    Livro l3 = criar_livro(12343, "Livro C", "Autor C", "A", 2022, "Editora C", 300);
 
     inserir_livro(&raizOriginal, l1);
     inserir_livro(&raizOriginal, l2);
@@ -19,7 +25,7 @@ int main(void){
     exibir_arvore(raizOriginal);
 
     printf("\n\nBuscando:");
-    buscar_por_genero(raizOriginal, "Genero A");
+    buscar_por_genero(raizOriginal, "A");
 
     liberar_arvore(raizOriginal);
 
@@ -32,6 +38,8 @@ int main(void){
                 \n1- Adicionar novo livro\
                 \n2- Buscar livro por genero\
                 \n3- Exibir livros\
+                \n4- Carregar arquivo\
+                \n5- Salvar estado\
                 \n0- Sair");
 
         printf("\n\nEscolha: ");
@@ -40,22 +48,41 @@ int main(void){
         system("cls");
 
         switch (opcao) {
-        case 1:
-            printf("Opcao 1");
-            break;
-        case 2:
-            printf("Opcao 2");
-            break;
-        case 3:
-            printf("Opcao 3");
-            break;
-        case 0:
-            printf("Saindo...");
-            break;
-        
-        default:
-            printf("\n\nEntrada invalida!");
-            break;
+            case 1:
+                l = criar_livro(12344, "Livro M", "Autor M", "A", 2024, "Editora M", 200);
+                inserir_livro(raizOriginal, l);
+                break;
+                
+            case 2:
+                printf("Por qual genero deseja buscar? ");
+                scanf("%49s", genero);
+                buscar_por_genero(raizOriginal, "A");
+                break;
+
+            case 3:
+                printf("Opcao 3");
+                break;
+
+            case 4:
+                printf("Qual o nome do arquivo? (digite sem a extensao dele)  ");   
+                char *nomeArquivo;
+                scanf("%s", nomeArquivo);
+                carregar_livros(nomeArquivo, raizOriginal);
+                break;
+
+            case 5:
+                opcao_salvamento();
+                break;
+
+            case 0:
+                printf("Saindo...");
+                salvar_arvore("bd.csv");
+                liberar_arvore(raizOriginal);
+                break;
+            
+            default:
+                printf("\n\nEntrada invalida!");
+                break;
         }
         
     }
