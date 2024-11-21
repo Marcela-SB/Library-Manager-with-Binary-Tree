@@ -1,14 +1,14 @@
 #ifndef ARVORE_H
 #define ARVORE_H
 
-#include "livros.h"
+#include "livros.c"
 
 typedef struct arvore No;
 
 struct arvore {
     Livro *livro;
-    int *sae;
-    int *sad;
+    No *sae;
+    No *sad;
 };
 
 No* inicializar_arvore();
