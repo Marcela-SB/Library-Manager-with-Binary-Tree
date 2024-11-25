@@ -1,39 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "arvore.c"
+#include "arquivo.c"
 
 No* raizOriginal = NULL;
 
 int main(void){
     int opcao = -1;
     Livro l;
-    char *genero = malloc(50 * sizeof(char));
-    genero[0] = "\0";
+    char genero[50] = "\0";
 
-    carregar_livros("bd.csv", raizOriginal);
-
-    Livro l1 = criar_livro(12344, "Livro A", "Autor A", "A", 2024, "Editora A", 200);
-    Livro l2 = criar_livro(12345, "Livro B", "Autor B", "B", 2023, "Editora B", 150);
-    Livro l3 = criar_livro(12343, "Livro C", "Autor C", "A", 2022, "Editora C", 300);
-
-    inserir_livro(&raizOriginal, l1);
-    inserir_livro(&raizOriginal, l2);
-    inserir_livro(&raizOriginal, l3);
-
-    printf("\n\nArvore binaria:");
-    exibir_arvore(raizOriginal);
-
-    printf("\n\nBuscando:");
-    buscar_por_genero(raizOriginal, "A");
-
-    liberar_arvore(raizOriginal);
+    carregar_livros("bd", &raizOriginal);
 
 
-
-
-    while (opcao != 0) {
-        //printf("Conexao com o banco de dados realizada com sucesso!");
+    while (opcao != 0) { 
         printf("\n\nO que deseja fazer? \
                 \n1- Adicionar novo livro\
                 \n2- Buscar livro por genero\
@@ -49,25 +29,25 @@ int main(void){
 
         switch (opcao) {
             case 1:
-                l = criar_livro(12344, "Livro M", "Autor M", "A", 2024, "Editora M", 200);
-                inserir_livro(raizOriginal, l);
+                l = criar_livro_manualmente();
+                inserir_livro(&raizOriginal, l);
                 break;
                 
             case 2:
                 printf("Por qual genero deseja buscar? ");
-                scanf("%49s", genero);
-                buscar_por_genero(raizOriginal, "A");
+                fgets(genero, 49, stdin);
+                buscar_por_genero(raizOriginal, genero);
                 break;
 
             case 3:
-                printf("Opcao 3");
+                exibir_arvore(raizOriginal);
                 break;
 
             case 4:
                 printf("Qual o nome do arquivo? (digite sem a extensao dele)  ");   
-                char *nomeArquivo;
-                scanf("%s", nomeArquivo);
-                carregar_livros(nomeArquivo, raizOriginal);
+                char nomeArquivo[50];
+                fgets(nomeArquivo, 49, stdin);
+                carregar_livros(nomeArquivo, &raizOriginal);
                 break;
 
             case 5:
@@ -76,7 +56,7 @@ int main(void){
 
             case 0:
                 printf("Saindo...");
-                salvar_arvore("bd.csv");
+                salvar_arvore("bd.csv", raizOriginal);
                 liberar_arvore(raizOriginal);
                 break;
             
@@ -87,6 +67,5 @@ int main(void){
         
     }
     
-
     return 0;
 }
