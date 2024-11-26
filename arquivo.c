@@ -5,6 +5,7 @@ No* carregar_livros(char nome_arquivo[], No** raiz) {
     char caminho[55];
     sprintf(caminho, "%s.csv", nome_arquivo);
 
+    
 
     FILE *arquivo = fopen(caminho, "r");
     if (arquivo == NULL) {
@@ -12,14 +13,23 @@ No* carregar_livros(char nome_arquivo[], No** raiz) {
         return *raiz;
     }
 
+
+    liberar_arvore(*raiz);
+    *raiz = NULL;
+
+
     int codigo, ano, numeroPaginas;
     char titulo[100], autor[50], genero[50], editora[50];
 
     while (fscanf(arquivo, "%d, %99[^,], %49[^,], %49[^,], %d, %49[^,], %d", &codigo, titulo, autor, genero, &ano, editora, &numeroPaginas) == 7) {
 
-        Livro livro = criar_livro(codigo, titulo, autor, genero, ano, editora, numeroPaginas);
+        if (validar_codigo(raizOriginal, codigo) == 0 || *raiz != NULL) {
+            Livro livro = criar_livro(codigo, titulo, autor, genero, ano, editora, numeroPaginas);
 
-        inserir_livro(raiz, livro);
+            inserir_livro(&raizOriginal, livro);
+        }
+        
+        
     }
 
     fclose(arquivo);
@@ -65,7 +75,9 @@ void opcao_salvamento(){
     printf("Como deseja salvar o estado atual?\
     \n1- Sobreescrever arquivo principal\
     \n2- Salvar em novo arquivo\
-    \n0- Cancelar");
+    \n0- Cancelar\
+    \
+    \n\n<<");
 
     scanf("%d", &x);
 
@@ -75,8 +87,7 @@ void opcao_salvamento(){
             break;
         case 2:
             printf("Digite o nome do arquivo: ");
-            scanf("%s", nomeArquivo);
-            strcat(nomeArquivo, ".csv");
+            sprintf(nomeArquivo, "%s.csv", nomeArquivo);
             salvar_arvore(nomeArquivo, raizOriginal);
             break;
         case 0:

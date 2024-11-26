@@ -21,4 +21,7 @@ void liberar_arvore(No* raiz);
 
 void buscar_por_genero(No* raiz, char genero[]);
 
+int validar_codigo(No* raiz, int codigo);
+Livro criar_livro_manualmente();
+
 #endif

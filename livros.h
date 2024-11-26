@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "arvore.h"
-
 typedef struct livro Livro;
 
 struct livro {
@@ -19,11 +17,8 @@ struct livro {
     int numeroPaginas;
 };
 
-
-int validar_codigo(No* raiz, int codigo);
-
 Livro criar_livro(int codigo, char titulo[], char autor[], char genero[], int ano, char editora[], int numeroPaginas);
 
-Livro criar_livro_manualmente();
+
 
 #endif
