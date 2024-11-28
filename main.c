@@ -15,19 +15,21 @@ int main(void){
     carregar_livros("bd", &raizOriginal);
 
     #ifdef _WIN32
-        printf("\n.");
-        Sleep(2000);
+        Sleep(1000);
+        printf("\n\n.");
+        Sleep(1000);
         printf(".");
-        Sleep(2000);
+        Sleep(1000);
         printf(".");
-        Sleep(2000);
+        Sleep(1000);
     #else
-        printf("\n.");
-        sleep(2);
+        sleep(1);
+        printf("\n\n.");
+        sleep(1);
         printf(".");
-        sleep(2);
+        sleep(1);
         printf(".");
-        sleep(2);
+        sleep(1);
     #endif
 
 
@@ -48,7 +50,7 @@ int main(void){
                 \n5- Salvar estado\
                 \n0- Sair");
 
-        printf("\n\nEscolha: ");
+        printf("\n\n>>> ");
         scanf("%d", &opcao);
         getchar();
 
@@ -59,34 +61,39 @@ int main(void){
         #endif
 
         switch (opcao) {
-            case 1:
-                l = criar_livro_manualmente();
-                inserir_livro(&raizOriginal, l);
+            case 1:     // Adicionar novo livro
+                l = criar_livro_manualmente(raizOriginal);
+                if (l.codigo == 0) { 
+                    printf("\nOperacao cancelada.\n");
+                } else {
+                    inserir_livro(&raizOriginal, l);
+                }
                 break;
                 
-            case 2:
-                printf("Por qual genero deseja buscar? ");
+            case 2:     // Buscar livro por genero
+                printf("Por qual genero deseja buscar?\n\
+                >>> ");
                 fgets(genero, sizeof(genero), stdin);
                 genero[strcspn(genero, "\n")] = '\0';
                 buscar_por_genero(raizOriginal, genero);
                 break;
 
-            case 3:
+            case 3:     // Exibir livros
                 exibir_arvore(raizOriginal);
                 break;
 
-            case 4:
-                printf("Qual o nome do arquivo? (digite sem a extensao dele)  ");
+            case 4:     // Carregar arquivo
+                printf("Qual o nome do arquivo? (digite sem a extensao dele) \n>>> ");
                 fgets(nomeArquivo, sizeof(nomeArquivo), stdin);
                 nomeArquivo[strcspn(nomeArquivo, "\n")] = '\0';
                 carregar_livros(nomeArquivo, &raizOriginal);
                 break;
 
-            case 5:
+            case 5:     // Salvar estado
                 opcao_salvamento();
                 break;
 
-            case 0:
+            case 0:     // Sair
                 printf("Salvando banco de dados");
 
                 #ifdef _WIN32

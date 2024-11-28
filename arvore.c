@@ -15,25 +15,27 @@ No* inicializar_arvore(){
 
 // adiciona livro a um nó
 void inserir_livro(No** raiz, Livro livro) {
-    if (*raiz == NULL) {
-        // Aloca um novo nó
-        *raiz = inicializar_arvore();
-        (*raiz)->livro = (Livro*) malloc(sizeof(Livro));
-        *(*raiz)->livro = livro; // Copia o livro para o nó
-        (*raiz)->sae = NULL;
-        (*raiz)->sad = NULL;
+    if (!validar_codigo(*raiz, livro.codigo)) {
+        if (*raiz == NULL) {
+            // Aloca um novo nó
+            *raiz = inicializar_arvore();
+            (*raiz)->livro = (Livro*) malloc(sizeof(Livro));
+            *(*raiz)->livro = livro; // Copia o livro para o nó
+            (*raiz)->sae = NULL;
+            (*raiz)->sad = NULL;
 
-        // Confirma a inserção
-        printf("\nLivro inserido: %s (Codigo: %d)", livro.titulo, livro.codigo);
-        return;
-    }
+            // Confirma a inserção
+            printf("\nLivro inserido: %s (Codigo: %d)", livro.titulo, livro.codigo);
+            return;
+        }
 
-    // Lógica de inserção com base no código do livro
-    if (livro.codigo < (*raiz)->livro->codigo) {
-        inserir_livro(&((*raiz)->sae), livro);
-    } 
-    else {
-        inserir_livro(&((*raiz)->sad), livro);
+        // Lógica de inserção com base no código do livro
+        if (livro.codigo < (*raiz)->livro->codigo) {
+            inserir_livro(&((*raiz)->sae), livro);
+        } 
+        else {
+            inserir_livro(&((*raiz)->sad), livro);
+        }
     }
 }
 
@@ -97,25 +99,37 @@ int validar_codigo(No* raiz, int codigo){
     if (raiz->livro->codigo == codigo) {
         return 1;
     }
-    validar_codigo(raiz->sae, codigo);
-    validar_codigo(raiz->sad, codigo);
+    
+    if (validar_codigo(raiz->sae, codigo)) {
+        return 1;
+    }
+    if (validar_codigo(raiz->sad, codigo)) {
+        return 1;
+    }
 
     return 0;
 }
 
-Livro criar_livro_manualmente(){
-    int c, y, p;  
+Livro criar_livro_manualmente(No* raiz){
+    int c=-1, y=-1, p=-1;  
     char t[100], a[50], g[50], e[50];
     Livro livro_vazio = {0};
 
     printf("\n\nInsira as informacoes do livro...\n");
 
-    printf("Codigo: ");
-    scanf("%d", &c);
-    getchar();
-    if (validar_codigo(raizOriginal, c) == 1) {
-        printf("\nLivro com codigo %d já existe!", c);
-        return livro_vazio;
+    while (c<0) {
+        printf("Codigo: ");
+        scanf("%d", &c);
+        if (c>0) {
+            if (validar_codigo(raiz, c)) {
+            printf("\nLivro com codigo %d ja existe!", c);
+            return livro_vazio;
+            }
+        }
+        else{
+            printf("Valor de Codigo invalido!\n");
+            c = -1;
+        }
     }
     
     printf("Titulo: ");
@@ -130,17 +144,29 @@ Livro criar_livro_manualmente(){
     fgets(g, 49, stdin);
     g[strcspn(g, "\n")] = '\0';
 
-    printf("Ano: ");
-    scanf("%d", &y);
-    getchar();
+    while (y<0) {
+        printf("Ano: ");
+        scanf("%d", &y);
+        getchar();
+        if (y<0) {
+            printf("Ano invalido!\n");
+        }
+    }
 
     printf("Editora: ");
     fgets(e, 49, stdin);
     e[strcspn(e, "\n")] = '\0';
 
-    printf("N. Paginas: ");
-    scanf("%d", &p);
-    getchar();
+    while (p<1) {
+        printf("N. Paginas: ");
+        scanf("%d", &p);
+        getchar();
+
+        if (p<1) {
+            printf("Quantidade de Paginas invalida!");
+        }
+        
+    }
 
     return criar_livro (c, t, a, g, y, e, p);
 }

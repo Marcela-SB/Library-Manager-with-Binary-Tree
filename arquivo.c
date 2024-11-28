@@ -5,18 +5,11 @@ No* carregar_livros(char nome_arquivo[], No** raiz) {
     char caminho[55];
     sprintf(caminho, "%s.csv", nome_arquivo);
 
-    
-
     FILE *arquivo = fopen(caminho, "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return *raiz;
     }
-
-
-    liberar_arvore(*raiz);
-    *raiz = NULL;
-
 
     int codigo, ano, numeroPaginas;
     char titulo[100], autor[50], genero[50], editora[50];
@@ -70,16 +63,17 @@ void salvar_arvore(char nomeArquivo[], No *raiz){
 
 void opcao_salvamento(){
     int x = -1;
-    char nomeArquivo[55];
+    char nomeArquivo[50], caminhoCompleto[55];
 
     printf("Como deseja salvar o estado atual?\
     \n1- Sobreescrever arquivo principal\
     \n2- Salvar em novo arquivo\
     \n0- Cancelar\
     \
-    \n\n<<");
+    \n\n>>> ");
 
     scanf("%d", &x);
+    getchar();
 
     switch (x) {
         case 1:
@@ -87,8 +81,10 @@ void opcao_salvamento(){
             break;
         case 2:
             printf("Digite o nome do arquivo: ");
-            sprintf(nomeArquivo, "%s.csv", nomeArquivo);
-            salvar_arvore(nomeArquivo, raizOriginal);
+            fgets(nomeArquivo, 49, stdin);
+            nomeArquivo[strcspn(nomeArquivo, "\n")] = '\0';
+            sprintf(caminhoCompleto, "%s.csv", nomeArquivo);
+            salvar_arvore(caminhoCompleto, raizOriginal);
             break;
         case 0:
             return;
