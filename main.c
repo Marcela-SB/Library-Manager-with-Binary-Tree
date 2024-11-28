@@ -113,7 +113,7 @@ int main(void){
                 #endif
 
                 salvar_arvore("bd.csv", raizOriginal);
-                printf("\n\nSaindo...");
+                printf("\n\nSaindo...\n");
                 liberar_arvore(raizOriginal);
                 break;
             

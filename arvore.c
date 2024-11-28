@@ -87,7 +87,7 @@ void buscar_por_genero(No* raiz, char genero[]) {
     buscar_por_genero_aux(raiz, genero, &encontrado);
 
     if (!encontrado) {
-        printf("Nao ha livros com esse genero");
+        printf("\nNao ha livros com esse genero");
     }
 }
 
@@ -120,6 +120,7 @@ Livro criar_livro_manualmente(No* raiz){
     while (c<0) {
         printf("Codigo: ");
         scanf("%d", &c);
+        getchar();
         if (c>0) {
             if (validar_codigo(raiz, c)) {
             printf("\nLivro com codigo %d ja existe!", c);
